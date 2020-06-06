@@ -5,9 +5,26 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="js/phaser.min.js"></script>
     <title>Basic multiplayer online game</title>
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    </style>
   </head>
   <body>
     <div id="game"></div>
+    <div>
+      <span
+        >Input your url avatars. Url examples:
+        <br />
+        http://web-citizen.ru/hack/person_big.png
+        <br />http://web-citizen.ru/hack/user.png
+        <br />http://web-citizen.ru/hack/user_boy.png
+        <br />
+      </span>
+      <input type="text" placeholder="Input your avatar" id="avatarUrl" />
+      <button id="avatarButton">Set Avatar</button>
+    </div>
   </body>
   <script src="js/game.js" type="text/javascript"></script>
   <script src="js/main.js" type="text/javascript"></script>
