@@ -18,6 +18,7 @@ server.lastPlayderID = 0;
 
 server.listen(process.env.PORT || 8081, function () {
   console.log("Listening on " + server.address().port);
+  console.log("http://localhost:" + server.address().port);
 });
 
 io.on("connection", function (socket) {
@@ -30,6 +31,7 @@ io.on("connection", function (socket) {
     };
     socket.emit("allplayers", getAllPlayers());
     socket.broadcast.emit("newplayer", socket.player);
+    socket.emit("returnPlayer", socket.player);
 
     socket.on("click", function (data) {
       console.log("player ", socket.player);
@@ -45,7 +47,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on("disconnect", function () {
-      io.emit("remove", socket.player);
+      io.emit("remove", socket.player.id);
     });
   });
 

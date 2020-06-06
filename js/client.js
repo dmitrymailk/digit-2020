@@ -29,6 +29,9 @@ Client.socket.on("newplayer", function (data) {
 Client.socket.on("loadCustomImage", function (data) {
   Game.loadCustomImage(data.id, data.avatar);
 });
+Client.socket.on("returnPlayer", function (player) {
+  Game.setPlayerData(player);
+});
 
 Client.socket.on("allplayers", function (data) {
   for (var i = 0; i < data.length; i++) {
