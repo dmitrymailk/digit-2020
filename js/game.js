@@ -81,9 +81,9 @@ Game.movePlayer = function (id, x, y, url) {
   var tween = game.add.tween(player);
   var duration = distance * 2;
 
-  if (!Game.avatars[id]) {
+  if (!Game.avatars[id] && Game.isCustom) {
     let image = game.add.image(player.x, player.y, `avatar${id}`);
-    mask = game.add.graphics(x, y);
+    let mask = game.add.graphics(x, y);
     mask.beginFill(0xffffff);
     mask.drawCircle(120, 120, 120);
     image.mask = mask;
@@ -92,19 +92,24 @@ Game.movePlayer = function (id, x, y, url) {
     mask.anchor.set(0.5);
     mask.alpha = 0;
     image.anchor.set(0.5);
+    Game.playerMap[id] = image;
     Game.masks[id] = mask;
     Game.avatars[id] = image;
+    console.log("asd");
   }
-  var avatar = Game.avatars[id];
-  var tween_avatar = game.add.tween(avatar);
+  if (Game.avatars[id]) {
+    var avatar = Game.avatars[id];
+    var tween_avatar = game.add.tween(avatar);
+    tween_avatar.to({ x: x, y: y }, duration);
+    tween_avatar.start();
+  }
 
   var mask = Game.masks[id];
   var tween_mask = game.add.tween(mask);
 
   tween.to({ x: x, y: y }, duration);
   tween.start();
-  tween_avatar.to({ x: x, y: y }, duration);
-  tween_avatar.start();
+
   tween_mask.to({ x: x, y: y }, duration);
   tween_mask.start();
 };
