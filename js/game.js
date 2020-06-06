@@ -83,7 +83,16 @@ Game.movePlayer = function (id, x, y, url) {
 
   if (!Game.avatars[id]) {
     let image = game.add.image(player.x, player.y, `avatar${id}`);
+    mask = game.add.graphics(x, y);
+    mask.beginFill(0xffffff);
+    mask.drawCircle(120, 120, 120);
+    image.mask = mask;
+    mask.pivot.x = 120;
+    mask.pivot.y = 120;
+    mask.anchor.set(0.5);
+    mask.alpha = 0;
     image.anchor.set(0.5);
+    Game.masks[id] = mask;
     Game.avatars[id] = image;
   }
   var avatar = Game.avatars[id];
