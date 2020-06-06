@@ -1,8 +1,3 @@
-/*
- * Author: Jerome Renaux
- * E-mail: jerome.renaux@gmail.com
- */
-
 var Game = {};
 
 Game.init = function () {
@@ -10,8 +5,8 @@ Game.init = function () {
 };
 
 Game.preload = function () {
-  game.load.image("back", "assets/sprites/back.png");
-  game.load.image("sprite", "http://web-citizen.ru/hack/person_big.png");
+  game.load.image("back", "assets/sprites/simple-map.png");
+  game.load.image("sprite", "assets/sprites/photo.png");
 };
 
 Game.create = function () {
@@ -19,11 +14,13 @@ Game.create = function () {
 
   Game.playerMap = {};
   Game.avatars = {};
+  Game.masks = {};
+  Game.isCustom = false;
   var testKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   testKey.onDown.add(Client.sendTest, this);
 
   var image = game.add.sprite(game.world.centerX, game.world.centerY, "back");
-  image.anchor.set(0.5);
+  // image.anchor.set(0.5);
   image.inputEnabled = true;
   image.events.onInputDown.add(Game.getCoordinates, this);
 
@@ -43,16 +40,29 @@ Game.getCoordinates = function (layer, pointer) {
 };
 
 Game.addNewPlayer = function (id, x, y) {
-  Game.playerMap[id] = game.add.sprite(x, y, "sprite");
+  let image = game.add.sprite(x, y, "sprite");
+  mask = game.add.graphics(x, y);
+  mask.beginFill(0xffffff);
+  mask.drawCircle(120, 120, 120);
+  image.mask = mask;
+  mask.pivot.x = 120;
+  mask.pivot.y = 120;
+  mask.anchor.set(0.5);
+  mask.alpha = 0;
+  image.anchor.set(0.5);
+  Game.playerMap[id] = image;
+  Game.masks[id] = mask;
   // game.camera.follow(Game.playerMap[id]);
 };
 
 Game.loadCustomImage = function (id, url) {
-  // game.playerId = id;
-  game.cache.removeImage(`avatar${id}`, true);
   if (Game.avatars[id]) {
     Game.avatars[id].destroy();
     delete Game.avatars[id];
+  }
+
+  if (Game.isCustom) {
+    Game.playerMap[id].alpha = 0;
   }
   game.load.image(`avatar${id}`, url);
   game.load.start();
@@ -72,19 +82,27 @@ Game.movePlayer = function (id, x, y, url) {
   var duration = distance * 2;
 
   if (!Game.avatars[id]) {
-    Game.avatars[id] = game.add.image(player.x, player.y, `avatar${id}`);
+    let image = game.add.image(player.x, player.y, `avatar${id}`);
+    image.anchor.set(0.5);
+    Game.avatars[id] = image;
   }
   var avatar = Game.avatars[id];
   var tween_avatar = game.add.tween(avatar);
+
+  var mask = Game.masks[id];
+  var tween_mask = game.add.tween(mask);
 
   tween.to({ x: x, y: y }, duration);
   tween.start();
   tween_avatar.to({ x: x, y: y }, duration);
   tween_avatar.start();
+  tween_mask.to({ x: x, y: y }, duration);
+  tween_mask.start();
 };
 
 Game.setAvatar = function (url) {
   console.log("Send to server url", url);
+  Game.isCustom = true;
   Client.setAvatar(url);
 };
 
