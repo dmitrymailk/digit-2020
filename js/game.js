@@ -92,6 +92,8 @@ Game.movePlayer = function (id, x, y, url) {
     mask.anchor.set(0.5);
     mask.alpha = 0;
     image.anchor.set(0.5);
+    image.width = 120;
+    image.height = 120;
     Game.playerMap[id] = image;
     Game.masks[id] = mask;
     Game.avatars[id] = image;
