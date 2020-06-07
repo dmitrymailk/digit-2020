@@ -6,7 +6,7 @@ Game.init = function () {
 
 Game.preload = function () {
   game.load.image("back", "assets/sprites/simple-map.png");
-  game.load.image("sprite", "http://web-citizen.ru/hack/user.png");
+  game.load.image("sprite", "assets/sprites/photo.png");
 };
 
 Game.create = function () {
@@ -39,6 +39,7 @@ Game.create = function () {
       console.log("Some message", text);
       Client.socket.emit("sendMessage", text);
     }
+    document.querySelector(".inputField__input").value = "";
   });
 
   document.querySelector(".shareContacts").addEventListener("click", () => {
@@ -63,7 +64,7 @@ Game.addNewPlayer = function (id, x, y) {
   image.inputEnabled = true;
   image.events.onInputDown.add(Game.getUserData, this);
   Game.playerMap[id] = image;
-  console.log("create user");
+  // console.log("create user");
 };
 
 Game.loadCustomImage = function (id, url) {
@@ -77,7 +78,7 @@ Game.loadCustomImage = function (id, url) {
   }
   game.load.image(`avatar${id}`, url);
   game.load.start();
-  console.log("Server execution", url);
+  // console.log("Server execution", url);
 };
 
 Game.loadCustomMessage = function (id, message) {
@@ -86,11 +87,11 @@ Game.loadCustomMessage = function (id, message) {
     delete Game.texts[id];
   }
   Game.messages[id] = message;
-  console.log("Get message", message);
+  // console.log("Get message", message);
 };
 
 Game.movePlayer = function (id, x, y, url) {
-  console.log("move user ==", id);
+  // console.log("move user ==", id);
   if (game.playerId == id) {
     game.camera.follow(Game.playerMap[id]);
   }
@@ -127,7 +128,7 @@ Game.movePlayer = function (id, x, y, url) {
 
   if (!Game.texts[id] && Game.messages[id]) {
     let text = Game.messages[id];
-    console.log("Some text", text);
+    // console.log("Some text", text);
     Game.texts[id] = game.add.text(x, y, text, {
       font: "bold 32px Arial",
       fill: "#fff",
