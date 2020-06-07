@@ -33,6 +33,14 @@ Client.socket.on("returnPlayer", function (player) {
   Game.setPlayerData(player);
 });
 
+Client.getUserById = function (id) {
+  Client.socket.emit("getUserById", id);
+};
+
+Client.socket.on("getUserById", function (user) {
+  console.log("User by id", user);
+});
+
 Client.socket.on("allplayers", function (data) {
   for (var i = 0; i < data.length; i++) {
     Game.addNewPlayer(data[i].id, data[i].x, data[i].y);

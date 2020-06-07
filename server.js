@@ -46,6 +46,11 @@ io.on("connection", function (socket) {
       io.emit("loadCustomImage", socket.player);
     });
 
+    socket.on("getUserById", function (id) {
+      console.log("User id ", id);
+      io.emit("getUserById", getPlayerById(id)[0]);
+    });
+
     socket.on("disconnect", function () {
       io.emit("remove", socket.player.id);
     });
@@ -61,6 +66,14 @@ function getAllPlayers() {
   Object.keys(io.sockets.connected).forEach(function (socketID) {
     var player = io.sockets.connected[socketID].player;
     if (player) players.push(player);
+  });
+  return players;
+}
+function getPlayerById(id) {
+  var players = [];
+  Object.keys(io.sockets.connected).forEach(function (socketID) {
+    var player = io.sockets.connected[socketID].player;
+    if (player && player.id == id) players.push(player);
   });
   return players;
 }
