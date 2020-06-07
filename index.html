@@ -25,18 +25,18 @@
       .inputField {
         position: fixed;
         bottom: 100px;
-        background: #ffffff;
-        opacity: 0.4;
+
         border-radius: 24px;
         width: 80%;
         left: 20px;
         height: 56px;
         display: flex;
+        background-color: rgba(255, 255, 255, 0.1);
       }
 
       .inputField__input {
         opacity: 1;
-        width: calc(100% - 110px);
+        width: calc(100%);
         height: 100%;
         border: 0;
         outline: none !important;
@@ -45,8 +45,9 @@
         height: 54px;
         color: #222222;
         font-size: 15px;
-        padding-left: 46px;
+        padding-left: 48px;
         font-family: "Montserrat", sans-serif;
+        background-color: rgba(255, 255, 255, 0.1);
       }
 
       .userInfo {
@@ -136,6 +137,22 @@
         display: none;
         color: #90c23c;
       }
+      .inputField__send {
+        margin-left: 15px;
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+      }
+
+      .inputField__send-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .inputField .inputField__send {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -162,7 +179,13 @@
           class="inputField__input"
           placeholder="Your Message"
         />
-        <img class="inputField__send" src="assets/sprites/sprite.png" alt="" />
+        <div class="inputField__send-div">
+          <img
+            class="inputField__send"
+            src="assets/sprites/send_email-w.png"
+            alt=""
+          />
+        </div>
       </div>
 
       <div class="userInfo">
