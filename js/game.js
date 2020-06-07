@@ -6,7 +6,7 @@ Game.init = function () {
 
 Game.preload = function () {
   game.load.image("back", "assets/sprites/simple-map.png");
-  game.load.image("sprite", "assets/sprites/photo.png");
+  game.load.image("sprite", "http://web-citizen.ru/hack/user_boy.png ");
 };
 
 Game.create = function () {
