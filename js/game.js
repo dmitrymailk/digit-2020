@@ -175,6 +175,10 @@ Game.setPlayerData = function (player) {
 };
 
 Game.getUserData = function (image) {
-  console.log(image.id);
-  Client.getUserById(image.id);
+  let bundle = {
+    id: image.id,
+    senderId: game.playerId,
+  };
+  console.log(bundle);
+  Client.getUserById(bundle);
 };

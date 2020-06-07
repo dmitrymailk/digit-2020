@@ -1,7 +1,3 @@
-/**
- * Created by Jerome on 03-03-16.
- */
-//noinspection JSCheckFunctionSignatures,JSCheckFunctionSignatures,JSCheckFunctionSignatures
 let width = document.body.clientWidth;
 let height = document.body.clientHeight;
 

@@ -38,21 +38,23 @@ Client.socket.on("returnPlayer", function (player) {
   Game.setPlayerData(player);
 });
 
-Client.getUserById = function (id) {
-  Client.socket.emit("getUserById", id);
+Client.getUserById = function (bundle) {
+  Client.socket.emit("getUserById", bundle);
 };
 
-Client.socket.on("getUserById", function (user) {
-  console.log("User by id", user);
-  game.camera.follow(Game.playerMap[user.id]);
-  // show modal
-  document.querySelector(".userInfo").style.display = "block";
+Client.socket.on("getUserById", function (result) {
+  console.log("User by id", result.user.id, game.playerId);
+  if (game.playerId == result.senderId) {
+    game.camera.follow(Game.playerMap[result.user.id]);
+    // show modal
+    document.querySelector(".userInfo").style.display = "flex";
 
-  let { id, avatar, hobby, nickname, job, random, status } = user;
-  document.querySelector("#userInfo__hobby").innerHTML = hobby;
-  document.querySelector(".userInfo__name").innerHTML = nickname;
-  document.querySelector("#userInfo__job").innerHTML = job;
-  document.querySelector(".userInfo__status-value").innerHTML = status;
+    let { id, avatar, hobby, nickname, job, random, status } = result.user;
+    document.querySelector("#userInfo__hobby").innerHTML = hobby;
+    document.querySelector(".userInfo__name").innerHTML = nickname;
+    document.querySelector("#userInfo__job").innerHTML = job;
+    document.querySelector(".userInfo__status-value").innerHTML = status;
+  }
 });
 
 Client.socket.on("allplayers", function (data) {

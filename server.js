@@ -52,9 +52,13 @@ io.on("connection", function (socket) {
       io.emit("loadCustomImage", socket.player);
     });
 
-    socket.on("getUserById", function (id) {
-      console.log("User id ", id);
-      io.emit("getUserById", getPlayerById(id)[0]);
+    socket.on("getUserById", function (bundle) {
+      console.log("User id ", bundle.id);
+      let result = {
+        user: getPlayerById(bundle.id)[0],
+        senderId: bundle.senderId,
+      };
+      io.emit("getUserById", result);
     });
 
     socket.on("sendMessage", function (text) {
