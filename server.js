@@ -28,6 +28,12 @@ io.on("connection", function (socket) {
       x: randomInt(100, 400),
       y: randomInt(100, 400),
       avatar: "",
+      hobby: "Занимаюсь всяким",
+      nickname: "John Smith",
+      job: "Game dev dev",
+      random: Date(),
+      status: "Ищу собеседника и ещё",
+      lastMessage: "",
     };
     socket.emit("allplayers", getAllPlayers());
     socket.broadcast.emit("newplayer", socket.player);
@@ -49,6 +55,12 @@ io.on("connection", function (socket) {
     socket.on("getUserById", function (id) {
       console.log("User id ", id);
       io.emit("getUserById", getPlayerById(id)[0]);
+    });
+
+    socket.on("sendMessage", function (text) {
+      console.log("User message", text);
+      socket.player.lastMessage = text;
+      io.emit("loadCustomMessage", socket.player);
     });
 
     socket.on("disconnect", function () {

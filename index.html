@@ -2,12 +2,139 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="js/phaser.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
     <title>Basic multiplayer online game</title>
     <style>
       * {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      body,
+      html {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      .inputField {
+        position: fixed;
+        bottom: 66px;
+        background: #ffffff;
+        opacity: 0.4;
+        border-radius: 24px;
+        width: 80%;
+        left: 20px;
+        height: 56px;
+        display: flex;
+      }
+
+      .inputField__input {
+        opacity: 1;
+        width: calc(100% - 110px);
+        height: 100%;
+        border: 0;
+        outline: none !important;
+        border-radius: 24px;
+        padding: 0;
+        height: 54px;
+        color: #222222;
+        font-size: 15px;
+        padding-left: 46px;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .userInfo {
+        position: fixed;
+        top: 60px;
+        width: calc(100% - 40px);
+        height: 220px;
+        background: #ffffff;
+        border-radius: 24px;
+        margin-left: 20px;
+        display: none;
+        flex-direction: column;
+      }
+
+      .userInfo__name {
+        margin-top: 20px;
+        margin-left: 20px;
+        font-weight: 600;
+        font-size: 18px;
+        color: #181818;
+      }
+      .userInfo__status {
+        font-family: "Montserrat", sans-serif;
+        color: #101010;
+        font-size: 14px;
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .userInfo__status span {
+        background: #ffd450;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        display: inline-flex;
+        margin-right: 8px;
+      }
+
+      .userInfo_line {
+        display: flex;
+        margin-left: 20px;
+        margin-top: 20px;
+      }
+
+      .userInfo-group__title {
+        color: #979797;
+        font-weight: 600;
+        font-size: 18px;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .userInfo-group__value {
+        margin-top: 6px;
+        color: #181818;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .userInfo-group2 {
+        margin-left: 40px;
+      }
+
+      .shareContacts {
+        background: #fff4c9;
+        border-radius: 24px;
+        height: 40px;
+        width: 142px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        outline: none;
+        color: #ffcc00;
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+        border: none;
+        line-height: 15px;
+        margin-left: 20px;
+        margin-top: 30px;
+        position: absolute;
+        bottom: 15px;
+      }
+      .shareContacts__result {
+        position: absolute;
+        bottom: 28px;
+        right: 30px;
+        display: none;
+        color: #90c23c;
       }
     </style>
   </head>
@@ -18,7 +145,7 @@
         width: 100% !important;
         height: 100% !important;
       } -->
-      <span
+      <!-- <span
         >Input your url avatars. Url examples:
         <br />http://web-citizen.ru/hack/person_big.png
         <br />http://web-citizen.ru/hack/user.png
@@ -27,10 +154,47 @@
         <br />
       </span>
       <input type="text" placeholder="Input your avatar" id="avatarUrl" />
-      <button id="avatarButton">Set Avatar</button>
+      <button id="avatarButton">Set Avatar</button> -->
+
+      <div class="inputField">
+        <input
+          type="text"
+          class="inputField__input"
+          placeholder="Your Message"
+        />
+        <img class="inputField__send" src="assets/sprites/sprite.png" alt="" />
+      </div>
+
+      <div class="userInfo">
+        <div>
+          <div class="userInfo__name">Emily Dougrer</div>
+          <div class="userInfo__status">
+            <span></span>
+            <div class="userInfo__status-value"></div>
+          </div>
+        </div>
+        <div class="userInfo_line">
+          <div class="userInfo-group">
+            <div class="userInfo-group__title">Профессия</div>
+            <div class="userInfo-group__value" id="userInfo__job">Дизайнер</div>
+          </div>
+          <div class="userInfo-group2">
+            <div class="userInfo-group__title">Интересы</div>
+            <div class="userInfo-group__value" id="userInfo__hobby">
+              Дизайн, лекция
+            </div>
+          </div>
+        </div>
+        <div>
+          <button class="shareContacts">Обменяться визитками</button>
+          <div class="shareContacts__result">Отправлено.</div>
+        </div>
+        <!-- <div class="userInfo__id">id</div> -->
+      </div>
     </div>
   </body>
-  <script src="js/game.js" type="text/javascript"></script>
-  <script src="js/main.js" type="text/javascript"></script>
-  <script src="js/client.js" type="text/javascript"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/client.js"></script>
+  <script src="js/meetUp.js"></script>
 </html>

@@ -2,9 +2,12 @@
  * Created by Jerome on 03-03-16.
  */
 //noinspection JSCheckFunctionSignatures,JSCheckFunctionSignatures,JSCheckFunctionSignatures
+let width = document.body.clientWidth;
+let height = document.body.clientHeight;
+
 var game = new Phaser.Game(
-  24 * 32,
-  17 * 32,
+  width,
+  height,
   Phaser.CANVAS,
   document.getElementById("game")
 );

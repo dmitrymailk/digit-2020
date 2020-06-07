@@ -29,6 +29,11 @@ Client.socket.on("newplayer", function (data) {
 Client.socket.on("loadCustomImage", function (data) {
   Game.loadCustomImage(data.id, data.avatar);
 });
+
+Client.socket.on("loadCustomMessage", function (data) {
+  Game.loadCustomMessage(data.id, data.lastMessage);
+});
+
 Client.socket.on("returnPlayer", function (player) {
   Game.setPlayerData(player);
 });
@@ -39,6 +44,15 @@ Client.getUserById = function (id) {
 
 Client.socket.on("getUserById", function (user) {
   console.log("User by id", user);
+  game.camera.follow(Game.playerMap[user.id]);
+  // show modal
+  document.querySelector(".userInfo").style.display = "block";
+
+  let { id, avatar, hobby, nickname, job, random, status } = user;
+  document.querySelector("#userInfo__hobby").innerHTML = hobby;
+  document.querySelector(".userInfo__name").innerHTML = nickname;
+  document.querySelector("#userInfo__job").innerHTML = job;
+  document.querySelector(".userInfo__status-value").innerHTML = status;
 });
 
 Client.socket.on("allplayers", function (data) {

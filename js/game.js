@@ -15,6 +15,9 @@ Game.create = function () {
   Game.playerMap = {};
   Game.avatars = {};
   Game.masks = {};
+  Game.messages = {};
+  Game.texts = {};
+
   Game.isCustom = false;
   var testKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   testKey.onDown.add(Client.sendTest, this);
@@ -27,9 +30,19 @@ Game.create = function () {
   Client.askNewPlayer();
 
   // event on click button
-  document.getElementById("avatarButton").addEventListener("click", () => {
-    let imgLink = document.getElementById("avatarUrl").value;
-    Game.setAvatar(imgLink);
+  document.querySelector(".inputField__send").addEventListener("click", () => {
+    let text = document.querySelector(".inputField__input").value;
+    if (text.slice(0, 4) == "http") {
+      console.log("IMG LINK", text);
+      Game.setAvatar(text);
+    } else {
+      console.log("Some message", text);
+      Client.socket.emit("sendMessage", text);
+    }
+  });
+
+  document.querySelector(".shareContacts").addEventListener("click", () => {
+    document.querySelector(".shareContacts__result").style.display = "block";
   });
   game.world.setBounds(0, 0, 1920, 1920);
 };
@@ -37,26 +50,20 @@ Game.create = function () {
 Game.getCoordinates = function (layer, pointer) {
   // send player coordinates
   Client.sendClick(pointer.worldX, pointer.worldY);
+  let input = document.querySelector(".inputField__input");
+  input.blur();
+  document.querySelector(".userInfo").style.display = "none";
+  game.camera.follow(Game.playerMap[Game.playerId]);
 };
 
 Game.addNewPlayer = function (id, x, y) {
   let image = game.add.sprite(x, y, "sprite");
-  // mask = game.add.graphics(x, y);
-  // mask.beginFill(0xffffff);
-  // mask.drawCircle(120, 120, 120);
-  // image.mask = mask;
-  // mask.pivot.x = 120;
-  // mask.pivot.y = 120;
-  // mask.anchor.set(0.5);
-  // mask.alpha = 0;
   image.anchor.set(0.5);
   image.id = id;
   image.inputEnabled = true;
   image.events.onInputDown.add(Game.getUserData, this);
   Game.playerMap[id] = image;
-  // Game.masks[id] = mask;
   console.log("create user");
-  // game.camera.follow(Game.playerMap[id]);
 };
 
 Game.loadCustomImage = function (id, url) {
@@ -68,10 +75,18 @@ Game.loadCustomImage = function (id, url) {
   if (Game.isCustom) {
     // Game.playerMap[id].alpha = 0;
   }
-
   game.load.image(`avatar${id}`, url);
   game.load.start();
   console.log("Server execution", url);
+};
+
+Game.loadCustomMessage = function (id, message) {
+  if (Game.texts[id]) {
+    Game.texts[id].destroy();
+    delete Game.texts[id];
+  }
+  Game.messages[id] = message;
+  console.log("Get message", message);
 };
 
 Game.movePlayer = function (id, x, y, url) {
@@ -110,6 +125,25 @@ Game.movePlayer = function (id, x, y, url) {
     tween_avatar.start();
   }
 
+  if (!Game.texts[id] && Game.messages[id]) {
+    let text = Game.messages[id];
+    console.log("Some text", text);
+    Game.texts[id] = game.add.text(x, y, text, {
+      font: "bold 32px Arial",
+      fill: "#fff",
+    });
+  } else {
+    // if (Game.texts[id]) Game.texts[id].destroy();
+  }
+
+  if (Game.texts[id]) {
+    var text = Game.texts[id];
+    console.log("text", text);
+    var tween_text = game.add.tween(text);
+    tween_text.to({ x: x, y: y }, duration);
+    tween_text.start();
+  }
+
   if (Game.masks[id]) {
     var mask = Game.masks[id];
     var tween_mask = game.add.tween(mask);
@@ -136,6 +170,7 @@ Game.removePlayer = function (id) {
 
 Game.setPlayerData = function (player) {
   game.playerId = player.id;
+  game.player = player;
   console.log("set id");
 };
 
